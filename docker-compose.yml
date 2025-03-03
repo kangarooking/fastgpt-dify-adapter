@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  fastgpt-dify-adapter:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FASTGPT_BASE_URL=http://host.docker.internal:3000
+      # 问题优化配置
+      - DATASET_SEARCH_USING_EXTENSION=true
+      - DATASET_SEARCH_EXTENSION_MODEL=Deepseek-chat
+      - DATASET_SEARCH_EXTENSION_BG=
+      # 重排序配置
+      - DATASET_SEARCH_USING_RERANK=true
+    restart: unless-stopped
