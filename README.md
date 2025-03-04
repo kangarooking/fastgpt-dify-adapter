@@ -51,14 +51,15 @@ GUNICORN_TIMEOUT=120
 ---
 
 ### **🤖 3. FastGPT 相关配置**
-| 变量 | 说明 | 默认值 |
-|------|------|-------|
-| `FASTGPT_BASE_URL` | FastGPT API 地址 | `http://host.docker.internal:3000` |
-| `FASTGPT_TIMEOUT` | FastGPT API 请求超时时间（秒） | `30` |
-| `DATASET_SEARCH_USING_EXTENSION` | 是否使用扩展搜索 (`true/false`) | `true` |
-| `DATASET_SEARCH_EXTENSION_MODEL` | 扩展搜索的模型 (`GPT-4, Deepseek-chat, etc.`) | `Deepseek-chat` |
-| `DATASET_SEARCH_EXTENSION_BG` | 扩展查询的背景信息 | （空） |
-| `DATASET_SEARCH_USING_RERANK` | 是否使用 ReRank 重新排序 (`true/false`) | `true` |
+| 变量 | 说明                                                            | 默认值 |
+|------|---------------------------------------------------------------|----|
+| `FASTGPT_BASE_URL` | FastGPT API 地址                                                | `http://host.docker.internal:3000` |
+| `FASTGPT_TIMEOUT` | FastGPT API 请求超时时间（秒）                                         | `30` |
+| `DATASET_SEARCH_USING_EXTENSION` | 是否开启问题优化 (`true/false`)                                       | `true` |
+| `DATASET_SEARCH_EXTENSION_MODEL` | 问题优化所使用的模型 (`GPT-4, Deepseek-chat, etc.`)                     | `Deepseek-chat` |
+| `DATASET_SEARCH_EXTENSION_BG` | 问题优化的背景信息                                                     | （空） |
+| `DATASET_SEARCH_USING_RERANK` | 是否使用 ReRank 重新排序 (`true/false`)                               | `true` |
+| `DATASET_SEARCH_MODE` | 检索模式配置：embedding（语意检索）、fullTextRecall（全文检索）、mixedRecall（混合检索） | `embedding` |
 
 📌 **示例：**
 ```ini
@@ -68,6 +69,7 @@ DATASET_SEARCH_USING_EXTENSION=true
 DATASET_SEARCH_EXTENSION_MODEL=Deepseek-chat
 DATASET_SEARCH_EXTENSION_BG=
 DATASET_SEARCH_USING_RERANK=true
+DATASET_SEARCH_MODE=embedding
 ```
 
 ---
@@ -107,6 +109,7 @@ DATASET_SEARCH_USING_EXTENSION=true
 DATASET_SEARCH_EXTENSION_MODEL=Deepseek-chat
 DATASET_SEARCH_EXTENSION_BG=
 DATASET_SEARCH_USING_RERANK=true
+DATASET_SEARCH_MODE=embedding
 
 # =========================================
 # 📜 日志 & 调试
