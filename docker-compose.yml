@@ -7,13 +7,4 @@ services:
       - .env  # 加载 .env 文件
     ports:
       - "${PORT}:${PORT}"
-    environment:
-      - FASTGPT_BASE_URL=http://host.docker.internal:3000
-      - PORT=5500
-      # 问题优化配置
-      - DATASET_SEARCH_USING_EXTENSION=true
-      - DATASET_SEARCH_EXTENSION_MODEL=Deepseek-chat
-      - DATASET_SEARCH_EXTENSION_BG=
-      # 重排序配置
-      - DATASET_SEARCH_USING_RERANK=true
     restart: unless-stopped
