@@ -1,11 +1,10 @@
 services:
   fastgpt-dify-adapter:
+    container_name: fastgpt-dify-adapter
     build:
       context: .
       dockerfile: Dockerfile
     image: hotwa/fastgpt-dify-adapter:1.0.0
     env_file:
       - .env
-    ports:
-      - "${PORT}:${PORT}"
     restart: unless-stopped
