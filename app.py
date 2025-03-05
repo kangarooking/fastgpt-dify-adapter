@@ -26,6 +26,7 @@ DATASET_SEARCH_USING_EXTENSION = os.getenv('DATASET_SEARCH_USING_EXTENSION', 'fa
 DATASET_SEARCH_EXTENSION_MODEL = os.getenv('DATASET_SEARCH_EXTENSION_MODEL', 'gpt-4-mini')
 DATASET_SEARCH_EXTENSION_BG = os.getenv('DATASET_SEARCH_EXTENSION_BG', '')
 DATASET_SEARCH_USING_RERANK = os.getenv('DATASET_SEARCH_USING_RERANK', 'false').lower() == 'true'
+DATASET_SEARCH_MODE = os.getenv('DATASET_SEARCH_MODE', 'embedding')
 FASTGPT_TIMEOUT = int(os.getenv('FASTGPT_TIMEOUT', 30))  # FastGPT API 超时
 API_KEY = os.getenv('API_KEY')  # dify认证密钥
 FASTGPT_API_KEY = os.getenv('FASTGPT_API_KEY') # 请求dify密钥
@@ -76,7 +77,7 @@ def retrieval():
         'text': query,
         'limit': top_k * 500,
         'similarity': score_threshold,
-        'searchMode': 'embedding',
+        'searchMode': DATASET_SEARCH_MODE,
         'usingReRank': DATASET_SEARCH_USING_RERANK,
         'datasetSearchUsingExtensionQuery': DATASET_SEARCH_USING_EXTENSION,
         'datasetSearchExtensionModel': DATASET_SEARCH_EXTENSION_MODEL,
