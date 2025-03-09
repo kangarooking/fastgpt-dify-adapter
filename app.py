@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # 读取环境变量
-FASTGPT_BASE_URL = os.getenv('FASTGPT_BASE_URL', 'http://127.0.0.1:3000')
+FASTGPT_BASE_URL = os.getenv('FASTGPT_BASE_URL', 'http://fastgpt:3000')
 DATASET_SEARCH_USING_EXTENSION = os.getenv('DATASET_SEARCH_USING_EXTENSION', 'false').lower() == 'true'
 DATASET_SEARCH_EXTENSION_MODEL = os.getenv('DATASET_SEARCH_EXTENSION_MODEL', 'gpt-4-mini')
 DATASET_SEARCH_EXTENSION_BG = os.getenv('DATASET_SEARCH_EXTENSION_BG', '')
