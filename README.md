@@ -1,5 +1,5 @@
 # fastgpt-dify-adapter
-dify外接fastgpt知识库的工具
+dify外接fastgpt知识库的工具，功能主要是将Dify请求的RAG检索通过本代码转化为FASTGPT支持的检索请求。做了一层中转和适配。
 
 使用方式参考：https://mp.weixin.qq.com/s/crQrneHZ0sT-c04YanofSw
 
@@ -11,11 +11,37 @@ echo "sk-$(openssl rand -base64 16 | tr -d '/+=')"
 echo "sk-$(uuidgen | tr -d '-')"
 echo "sk-$(date +%s | md5sum | cut -c1-32)"
 echo "sk-$(echo $RANDOM$(date +%s) | sha256sum | cut -c1-32)"
-# API_KEY=sk-u52DLfEleq1Outn1q2Hgg
+# ADAPTER_API_KEY=sk-u52DLfEleq1Outn1q2Hgg
 ```
-# **📌 `.env` 配置文件说明**
-本文件用于配置 **FastGPT Dify 适配器** 的环境变量，所有运行时参数均可通过 `.env` 配置，无需修改代码。  
+# **📌 `.adapter.env` 配置文件说明**
+本文件用于配置 **FastGPT Dify 适配器** 的环境变量，所有运行时参数均可通过 `.adapter.env` 配置，无需修改代码。  
 适用于 **Docker 部署** 和 **本地开发**，确保灵活性和可维护性。
+
+## 快速配置
+
+```shell
+cp .env.example /path/to/FastGPT/deploy/docker/.adapter.env
+```
+
+this `docker-compose.yml` put in `/path/to/FastGPT/deploy/docker/docker-compose.yml` file or your runing docker-compose.yml file
+
+like:
+
+```yaml
+  fastgpt-dify-adapter:
+    container_name: fastgpt-dify-adapter
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "$PORT:$PORT"
+    image: hotwa/fastgpt-dify-adapter:1.0.0
+    env_file:
+      - .adapter.env
+    restart: unless-stopped
+```
+
+then restart docker-compose.yml service, then enjoy fastgpt fit dify.
 
 ---
 
@@ -25,11 +51,11 @@ echo "sk-$(echo $RANDOM$(date +%s) | sha256sum | cut -c1-32)"
 ### **🔒 1. API 认证**
 | 变量 | 说明 | 默认值 |
 |------|------|-------|
-| `API_KEY` | 认证 API 请求的密钥，需匹配请求头中的 `Bearer Token` | **必填** |
+| `ADAPTER_API_KEY` | 认证 API 请求的密钥，需匹配请求头中的 `Bearer Token` | **必填** |
 
 📌 **示例：**
 ```ini
-API_KEY=sk-8f14e45fceea167a5a36dedd4bea2543
+ADAPTER_API_KEY=sk-8f14e45fceea167a5a36dedd4bea2543
 ```
 
 ---

@@ -21,14 +21,15 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # 读取环境变量
-FASTGPT_BASE_URL = os.getenv('FASTGPT_BASE_URL', 'http://127.0.0.1:3000')
+FASTGPT_BASE_URL = os.getenv('FASTGPT_BASE_URL', 'http://fastgpt:3000')
 DATASET_SEARCH_USING_EXTENSION = os.getenv('DATASET_SEARCH_USING_EXTENSION', 'false').lower() == 'true'
 DATASET_SEARCH_EXTENSION_MODEL = os.getenv('DATASET_SEARCH_EXTENSION_MODEL', 'gpt-4-mini')
 DATASET_SEARCH_EXTENSION_BG = os.getenv('DATASET_SEARCH_EXTENSION_BG', '')
 DATASET_SEARCH_USING_RERANK = os.getenv('DATASET_SEARCH_USING_RERANK', 'false').lower() == 'true'
 DATASET_SEARCH_MODE = os.getenv('DATASET_SEARCH_MODE', 'embedding')
 FASTGPT_TIMEOUT = int(os.getenv('FASTGPT_TIMEOUT', 30))  # FastGPT API 超时
-API_KEY = os.getenv('API_KEY')  # 认证密钥
+API_KEY = os.getenv('API_KEY')  # dify认证密钥
+FASTGPT_API_KEY = os.getenv('FASTGPT_API_KEY') # 请求dify密钥
 
 def validate_api_key(auth_header):
     """验证 API 密钥"""
@@ -43,7 +44,7 @@ def retrieval():
     client_ip = request.remote_addr
     logger.info(f'收到检索请求，IP: {client_ip}')
 
-    # 验证 API 认证
+    # 验证客户端请求的 API_KEY
     auth_header = request.headers.get('Authorization')
     if not validate_api_key(auth_header):
         logger.warning(f'API 认证失败，IP: {client_ip}')
@@ -70,7 +71,7 @@ def retrieval():
     top_k = retrieval_setting.get('top_k', 5)
     score_threshold = retrieval_setting.get('score_threshold', 0.5)
 
-    # 构建 FastGPT 请求
+    # 构建 FastGPT 请求体
     fastgpt_request = {
         'datasetId': knowledge_id,
         'text': query,
@@ -83,14 +84,16 @@ def retrieval():
         'datasetSearchExtensionBg': DATASET_SEARCH_EXTENSION_BG
     }
 
-    headers = {'Authorization': auth_header, 'Content-Type': 'application/json'}
+    # 使用新环境变量 FASTGPT_API_KEY 构造后端请求头
+    backend_headers = {'Authorization': f"Bearer {FASTGPT_API_KEY}", 'Content-Type': 'application/json'}
     fastgpt_url = f"{FASTGPT_BASE_URL}/api/core/dataset/searchTest"
+    logger.info(f"请求的地址: {fastgpt_url}")
     
     # 发送请求（支持指数退避策略）
     max_retries = 3
     for attempt in range(max_retries):
         try:
-            response = requests.post(fastgpt_url, headers=headers, json=fastgpt_request, timeout=FASTGPT_TIMEOUT)
+            response = requests.post(fastgpt_url, headers=backend_headers, json=fastgpt_request, timeout=FASTGPT_TIMEOUT)
             if response.status_code == 200:
                 fastgpt_response = response.json()
                 logger.info(f'FastGPT 响应成功，耗时: {time.time() - start_time:.2f}s')

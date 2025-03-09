@@ -8,5 +8,5 @@ services:
       - "$PORT:$PORT"
     image: registry.cn-guangzhou.aliyuncs.com/kangarooking/fastgpt-dify-adapter:1.0.2
     env_file:
-      - .env
+      - .adapter.env
     restart: unless-stopped
