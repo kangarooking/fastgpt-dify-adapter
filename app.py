@@ -28,7 +28,7 @@ DATASET_SEARCH_EXTENSION_BG = os.getenv('DATASET_SEARCH_EXTENSION_BG', '')
 DATASET_SEARCH_USING_RERANK = os.getenv('DATASET_SEARCH_USING_RERANK', 'false').lower() == 'true'
 DATASET_SEARCH_MODE = os.getenv('DATASET_SEARCH_MODE', 'embedding')
 FASTGPT_TIMEOUT = int(os.getenv('FASTGPT_TIMEOUT', 30))  # FastGPT API 超时
-API_KEY = os.getenv('API_KEY')  # 认证密钥
+API_KEY = os.getenv('API_KEY')  # fastgpt认证密钥
 
 def validate_api_key(auth_header):
     """验证 API 密钥"""
